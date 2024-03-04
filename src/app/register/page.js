@@ -1,22 +1,33 @@
 "use client"
 import Image from "next/image";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/Link"
+
 export default function RegisterPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [creatingUser, setCreatingUser] = useState(false);
-    const [userCreated, setUserCreated] = useState(true)
+    const [userCreated, setUserCreated] = useState(false)
+    const [error, setError] = useState(false);
     async function handleFormSubmit(ev) {
         ev.preventDefault();
         setCreatingUser(true);
-        await fetch("/api/register", {
+        setError(false);
+        setUserCreated(false);
+        const response = await fetch("/api/register", {
             method: "POST",
             body: JSON.stringify({ email, password }),
-            headers: { "Content-Type": "application/json" }
+            headers: { "Content-Type": "application/json" },
         });
-        setCreatingUser(false);
+        if (response.ok) {
+            setUserCreated(true); //user created
+        }
+        else {
+            setError(true)
+        }
+        setCreatingUser(false)
     }
+    // create user
     return (
         <section className="mt-8">
             <h1 className="text-center text-primary text-4xl mb-4">
@@ -24,8 +35,17 @@ export default function RegisterPage() {
             </h1>
             {userCreated && (
                 <div className="my-4 text-center">
-                    User created. Now you can <Link href="/Login">Login</Link>.
-                </div>)}
+                    User created. <br />
+                    Now you can{" "}
+                    <Link href="/login" className="underline">Login &raquo;</Link>
+                </div>
+            )}
+            {error && (
+                <div className="my-4 text-center">
+                    An error has occurred. <br />
+                    Please try again later.
+                </div>
+            )}
             <form className="block max-w-xs mx-auto" onSubmit={handleFormSubmit}>
                 <input type="email" placeholder="email" value={email}
                     disabled={creatingUser}
@@ -33,7 +53,9 @@ export default function RegisterPage() {
                 <input type="password" placeholder="password" value={password}
                     disabled={creatingUser}
                     onChange={ev => setPassword(ev.target.value)} />
-                <button type="submit" disabled={creatingUser}>Register</button>
+                <button type="submit" disabled={creatingUser}>
+                    Register
+                </button>
                 <div className="my-4 text-center text-gray-500">
                     or login with provider
                 </div>
@@ -41,6 +63,9 @@ export default function RegisterPage() {
                     <Image src={"/google.png"} alt={"login with google"} width={24} height={24} />
                     Login with Google
                 </button>
+                <div className="text-center my-4 text-gray-500 border-t pt-4">
+                    Existing account?{" "} <Link href={"/login"} className="underline">Login here &raquo;</Link>
+                </div>
             </form>
         </section>
 

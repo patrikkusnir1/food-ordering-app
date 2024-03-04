@@ -6,12 +6,13 @@ const UserSchema = new Schema({
     password: {
         type: String,
         required: true,
-        validate: pass => {
-            if (!pass?.length || pass.length < 5) {
-                new Error("Password must be at least 5 characters")
-            }
-        },
-    },
+        validate: {
+            validator: pass => {
+                return pass?.length && pass.length >= 5;
+            },
+            message: "Password must be at least 5 characters"
+        }
+    }
 }, { timestamps: true });
 
 UserSchema.post("validate", function (user) {

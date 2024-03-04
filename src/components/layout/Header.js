@@ -1,6 +1,7 @@
 "use client"
 import Link from "next/Link";
 import { useSession } from "next-auth/react"; // imported useSession
+import { signOut } from "next-auth/react" // import signOut function
 
 export default function Header() {
     const session = useSession();

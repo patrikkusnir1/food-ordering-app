@@ -1,6 +1,6 @@
-import AppProvider from "./components/AppContext"
+import AppProvider from "../components/AppContext"
 import { Roboto } from "next/font/google"; // import fonts
-import Header from "./components/layout/Header";
+import Header from "../components/layout/Header";
 import "./globals.css";
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["400", "500", "700"] });

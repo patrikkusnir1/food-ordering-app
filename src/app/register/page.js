@@ -1,13 +1,13 @@
 "use client"
 import Image from "next/image";
-import { useState } from "react";
+import { useState, signIn } from "react";
 import Link from "next/Link"
 
 export default function RegisterPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [creatingUser, setCreatingUser] = useState(false);
-    const [userCreated, setUserCreated] = useState(false)
+    const [userCreated, setUserCreated] = useState(false);
     const [error, setError] = useState(false);
     async function handleFormSubmit(ev) {
         ev.preventDefault();

@@ -7,7 +7,7 @@ import { User } from "../../../../models/User"
 import GoogleProvider from "next-auth/providers/google";
 import bcrypt from "bcrypt";
 
-const handler = NextAuth({
+export const authOptions = {
     secret: process.env.SECRET,
     adapter: MongoDBAdapter(clientPromise),
     providers: [
@@ -40,7 +40,9 @@ const handler = NextAuth({
             }
         })
     ],
-});
+}
+
+const handler = NextAuth(authOptions);
 
 // Export the handler for POST requests
 export { handler as GET, handler as POST };

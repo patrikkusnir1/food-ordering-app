@@ -1,4 +1,4 @@
-import { User } from "../models/User";
+import { User } from "../../../models/User";
 import mongoose from "mongoose";
 const dotenv = require("dotenv");
 
@@ -20,6 +20,15 @@ export async function POST(req) {
 
     // Route handler for POST requests
     const body = await req.json();
+    const pass = body.password;
+    if (!pass?.length || pass.length <= 5) {
+        new Error("Password must be at least 5 characters")
+    }
+
+    const notHashedPassword = pass;
+    const salt = bcrypt.genSaltSync(10);
+    body.password = bcrypt.hashSync(notHashedPassword, salt);
+
     const createdUser = await User.create(body);
     return Response.json(createdUser);
 }
